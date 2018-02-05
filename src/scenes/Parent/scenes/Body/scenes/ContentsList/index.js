@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-class App extends Component {
+class ContentList extends Component {
   render() {
     return (
       <div>
+        ContentList
       </div>
     );
   }
 }
 
-export default App;
+export default ContentList;
