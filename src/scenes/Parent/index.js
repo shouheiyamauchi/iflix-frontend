@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import { Layout } from 'antd';
+import Nav from './scenes/Nav'
+import Body from './scenes/Body'
 
 class Parent extends Component {
   render() {
     return (
-      <div>
-        Parent Container
-      </div>
+      <Layout>
+        <Nav />
+        <Body />
+      </Layout>
     );
   }
 }
