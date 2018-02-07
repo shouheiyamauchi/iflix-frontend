@@ -6077,7 +6077,15 @@ react-slick@~0.17.0:
     object-assign "^4.1.0"
     opencollective "^1.0.3"
 
-react@^16.2.0:
+react-star-ratings@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-star-ratings/-/react-star-ratings-2.2.0.tgz#bf1452df1e8a0f737621443c76343bc9d72e5a97"
+  dependencies:
+    classnames "^2.2.1"
+    prop-types "^15.6.0"
+    react "^16.1.0"
+
+react@^16.1.0, react@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:

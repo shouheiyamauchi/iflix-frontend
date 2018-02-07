@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import update from 'immutability-helper';
 import moment from 'moment';
-import { List } from 'antd';
+import { List, Tooltip, Button } from 'antd';
+import StarRatings from 'react-star-ratings';
 import styles from './styles.module.scss';
 
 const { Item } = List;
@@ -110,20 +111,39 @@ class ContentList extends Component {
           pagination={paginationConfig}
           dataSource={contents[paginationConfig.current]}
           loading={loading}
-          renderItem={item => (
+          renderItem={content => (
             <Item
-              key={item.title}
-              extra={<img style={{width: 150, marginBottom: 10, borderRadius: 5, filter: 'drop-shadow(5px 5px 6px #acacac)'}} alt="logo" src={item.thumbnail} />}
+              key={content.title}
+              extra={<img style={{width: 150, marginBottom: 10, borderRadius: 5, filter: 'drop-shadow(5px 5px 6px #acacac)'}} alt="logo" src={content.thumbnail} />}
             >
-              <h1>{item.title}</h1>
-              {item.genre}
+              <h1>{content.title}</h1>
+              {content.averageRating ? (
+                <Tooltip placement="topLeft" title="Watch movie to rate content">
+                  <div>
+                    <StarRatings
+                      rating={content.averageRating}
+                      starRatedColor="red"
+                      numberOfStars={5}
+                      starDimension="20"
+                      starSpacing="0"
+                    />
+                  </div>
+                </Tooltip>
+              ) : (
+                <div>
+                  Not Enough Ratings
+                </div>
+
+              )}
+              {content.genre}
               <br />
-              Rating: {item.averageRating || 'N/A'}
-              <br />
-              {moment(item.releaseDate).format('LL')}
+              {moment(content.releaseDate).format('LL')}
               <br />
               <br />
-              {item.description}
+              {content.description}
+              <br />
+              <br />
+              <Button type="danger">Watch Movie</Button>
             </Item>
           )}
         />
