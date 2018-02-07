@@ -113,7 +113,7 @@ class ContentList extends Component {
           renderItem={item => (
             <Item
               key={item.title}
-              extra={<img style={{width: 150, marginBottom: 10, borderRadius: 5, boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} alt="logo" src={item.thumbnail} />}
+              extra={<img style={{width: 150, marginBottom: 10, borderRadius: 5, filter: 'drop-shadow(5px 5px 6px #acacac)'}} alt="logo" src={item.thumbnail} />}
             >
               <h1>{item.title}</h1>
               {item.genre}

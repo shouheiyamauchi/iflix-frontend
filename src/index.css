@@ -1,7 +1,9 @@
+/* adjusting list height when no content exists */
 .ant-spin-container {
   min-height: calc(100vh - 236.16px);
 }
 
+/* centering of image in list */
 .ant-list-vertical .ant-list-item-extra-wrap {
   display: flex;
   justify-content: center;
