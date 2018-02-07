@@ -1,0 +1,8 @@
+.ant-spin-container {
+  min-height: calc(100vh - 236.16px);
+}
+
+.ant-list-vertical .ant-list-item-extra-wrap {
+  display: flex;
+  justify-content: center;
+}

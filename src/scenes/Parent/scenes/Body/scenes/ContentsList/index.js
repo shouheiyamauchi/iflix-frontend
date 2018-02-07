@@ -30,49 +30,64 @@ class ContentList extends Component {
   }
 
   changePage = (targetPage, newPageSize, includeRating) => {
-    if (this.apiCallRequired(targetPage, newPageSize,)) {
-      this.setState({ loading: true });
-
-      axios.get('http://localhost:3001/api/v1/contents', {
-          params: {
-            pageNo: targetPage,
-            resultsPerPage: newPageSize,
-            includeRating
-          }
-        })
-        .then(response => {
-          const contentsListData = response.data.data
-
-          const contents = this.contentRefreshRequired(contentsListData) ? (
-            { [contentsListData.page]: contentsListData.docs }
-          ) : (
-            update(this.state.contents, { [contentsListData.page]: { $set: contentsListData.docs } })
-          );
-
-          this.setState(update(this.state, {
-            loading: { $set: false },
-            paginationConfig: {
-              current: { $set: contentsListData.page },
-              pageSize: { $set: contentsListData.limit },
-              total: { $set: contentsListData.total }
-            },
-            contents: { $set: contents }
-          }));
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    if (this.apiCallRequired(targetPage, newPageSize)) {
+      this.contentListApiCall(targetPage, newPageSize, includeRating);
     } else {
-      this.setState(update(this.state, {
-        paginationConfig: {
-          current: { $set: targetPage }
-        }
-      }));
+      this.switchPage(targetPage);
     };
   }
 
   apiCallRequired = (targetPage, newPageSize) => {
     return (!this.state.contents[targetPage] || newPageSize !== this.state.paginationConfig.pageSize);
+  }
+
+  switchPage = targetPage => {
+    this.setState(update(this.state, {
+      paginationConfig: {
+        current: { $set: targetPage }
+      }
+    }));
+  }
+
+  contentListApiCall = (targetPage, newPageSize, includeRating) => {
+    this.setState({ loading: true });
+
+    axios.get('http://localhost:3001/api/v1/contents', {
+        params: {
+          pageNo: targetPage,
+          resultsPerPage: newPageSize,
+          includeRating
+        }
+      })
+      .then(response => {
+        const contentsListData = response.data.data
+        const contents = this.generateContentsObject(contentsListData)
+
+        this.setState(update(this.state, {
+          loading: { $set: false },
+          paginationConfig: {
+            current: { $set: contentsListData.page },
+            pageSize: { $set: contentsListData.limit },
+            total: { $set: contentsListData.total }
+          },
+          contents: { $set: contents }
+        }));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  generateContentsObject = contentsListData => {
+    if (this.contentRefreshRequired(contentsListData)) {
+      return {
+        [contentsListData.page]: contentsListData.docs
+      }
+    } else {
+      return update(this.state.contents, {
+        [contentsListData.page]: { $set: contentsListData.docs }
+      });
+    };
   }
 
   contentRefreshRequired = contentsListData => {
@@ -88,8 +103,7 @@ class ContentList extends Component {
     } = this.state
 
     return (
-      // create CSS class
-      <div class={styles.listContainer}>
+      <div className={styles.listContainer}>
         <List
           itemLayout="vertical"
           size="large"
@@ -99,7 +113,7 @@ class ContentList extends Component {
           renderItem={item => (
             <Item
               key={item.title}
-              extra={<img width={150} alt="logo" src={item.thumbnail} />}
+              extra={<img style={{width: 150, marginBottom: 10, borderRadius: 5, boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}} alt="logo" src={item.thumbnail} />}
             >
               <h1>{item.title}</h1>
               {item.genre}
