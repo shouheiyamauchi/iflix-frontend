@@ -8,6 +8,7 @@ class Nav extends Component {
   constructor(props) {
     super(props);
 
+    // state to capture current page
     this.state = {
     };
   }
