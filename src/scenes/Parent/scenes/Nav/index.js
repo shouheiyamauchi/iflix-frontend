@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 import logo from './images/logo.png';
+import styles from './styles.module.scss';
 
 const { Header } = Layout, { Item } = Menu;
 
@@ -16,11 +17,8 @@ class Nav extends Component {
   render() {
     return (
       <Header>
-        {/* create CSS class */}
-        <div style={{
-          float: 'left'
-        }}>
-          <img alt="iflix logo" src={logo} style={{height: '30px', marginRight: '10px'}} />
+        <div className={styles.logoContainer}>
+          <img alt="iflix logo" src={logo} />
         </div>
         <Menu
           theme="dark"
@@ -29,7 +27,7 @@ class Nav extends Component {
           style={{ lineHeight: '64px' }}
         >
           <Item key="1">Movies</Item>
-          <Item key="2">Login</Item>
+          <Item key="2">Signup</Item>
         </Menu>
       </Header>
     );

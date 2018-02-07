@@ -3,6 +3,7 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import moment from 'moment';
 import { List } from 'antd';
+import styles from './styles.module.scss';
 
 const { Item } = List;
 
@@ -13,62 +14,88 @@ class ContentList extends Component {
     this.state = {
       loading: true,
       contents: {},
-      resultsPerPage: 10,
-      paginationConfig: {}
+      paginationConfig: {
+        current: 0,
+        pageSize: 10,
+        total: 0,
+        onChange: ((targetPage, pageSize) => {this.changePage(targetPage, this.state.paginationConfig.pageSize, true)}),
+        showSizeChanger: true,
+        onShowSizeChange: ((targetPage, pageSize) => {this.changePage(targetPage, pageSize, true)})
+      }
     };
   }
 
   componentDidMount() {
-    this.getContents(1, this.state.resultsPerPage, true);
+    this.changePage(1, this.state.paginationConfig.pageSize, true);
   }
 
-  getContents = (pageNo, resultsPerPage, includeRating) => {
-    this.setState({ loading: true });
+  changePage = (targetPage, newPageSize, includeRating) => {
+    if (this.apiCallRequired(targetPage, newPageSize,)) {
+      this.setState({ loading: true });
 
-    axios.get('http://localhost:3001/api/v1/contents', {
-        params: {
-          pageNo,
-          resultsPerPage,
-          includeRating
-        }
-      })
-      .then(response => {
-        const contentsListData = response.data.data
-
-        // use immutability-helper
-        const paginationConfig = {
-          current: contentsListData.page,
-          pageSize: resultsPerPage,
-          total: contentsListData.total,
-          onChange: ((page, pageSize) => {this.getContents(page, this.state.resultsPerPage, true)})
-        }
-        // check changes compared to last call to determine reloading previous data or not
-
-        this.setState({
-          loading: false,
-          paginationConfig,
-          contents: update(this.state.contents, {[contentsListData.page]: {$set: contentsListData.docs}})
+      axios.get('http://localhost:3001/api/v1/contents', {
+          params: {
+            pageNo: targetPage,
+            resultsPerPage: newPageSize,
+            includeRating
+          }
         })
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        .then(response => {
+          const contentsListData = response.data.data
+
+          const contents = this.contentRefreshRequired(contentsListData) ? (
+            { [contentsListData.page]: contentsListData.docs }
+          ) : (
+            update(this.state.contents, { [contentsListData.page]: { $set: contentsListData.docs } })
+          );
+
+          this.setState(update(this.state, {
+            loading: { $set: false },
+            paginationConfig: {
+              current: { $set: contentsListData.page },
+              pageSize: { $set: contentsListData.limit },
+              total: { $set: contentsListData.total }
+            },
+            contents: { $set: contents }
+          }));
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      this.setState(update(this.state, {
+        paginationConfig: {
+          current: { $set: targetPage }
+        }
+      }));
+    };
+  }
+
+  apiCallRequired = (targetPage, newPageSize) => {
+    return (!this.state.contents[targetPage] || newPageSize !== this.state.paginationConfig.pageSize);
+  }
+
+  contentRefreshRequired = contentsListData => {
+    // checking if a refresh of cached content is required due to new contents, or a change in number of contents displayed per page
+    return (this.state.paginationConfig.total !== contentsListData.total || this.state.paginationConfig.pageSize !== contentsListData.limit);
   }
 
   render() {
     const {
       paginationConfig,
-      contents
+      contents,
+      loading
     } = this.state
 
     return (
       // create CSS class
-      <div style={{ background: '#fff', padding: 24, minHeight: '100vh' }}>
+      <div class={styles.listContainer}>
         <List
           itemLayout="vertical"
           size="large"
-          pagination={this.state.paginationConfig}
+          pagination={paginationConfig}
           dataSource={contents[paginationConfig.current]}
+          loading={loading}
           renderItem={item => (
             <Item
               key={item.title}
@@ -76,6 +103,8 @@ class ContentList extends Component {
             >
               <h1>{item.title}</h1>
               {item.genre}
+              <br />
+              Rating: {item.averageRating || 'N/A'}
               <br />
               {moment(item.releaseDate).format('LL')}
               <br />
