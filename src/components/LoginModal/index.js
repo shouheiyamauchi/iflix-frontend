@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
+import querystring from 'querystring';
 import { Modal } from 'antd';
+
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+const FormItem = Form.Item;
 
 class LoginModal extends Component {
   constructor(props) {
@@ -14,8 +19,16 @@ class LoginModal extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.updateLoggedInStatus();
+  }
+
   openLoginModal = () => {
     this.setState({ displayModal: true });
+  }
+
+  handleInput = e => {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleLogin = () => {
@@ -25,23 +38,25 @@ class LoginModal extends Component {
   loginApiCall = () => {
     this.setState({ loggingIn: true });
 
-    axios.post('http://localhost:3001/api/v1/users/login', {
-        params: {
-          username: this.state.username,
-          password: this.state.password
-        }
-      })
+    const params = querystring.stringify({
+      username: this.state.username,
+      password: this.state.password
+    })
+
+    axios.post('http://localhost:3001/api/v1/users/login?' + params)
       .then(response => {
         const userData = response.data.data;
-
         localStorage.setItem('iflixAuth', JSON.stringify(userData));
+
+        this.props.updateLoggedInStatus();
+        this.resetModal();
       })
       .catch(error => {
         console.log(error);
       });
   }
 
-  handleCancel = () => {
+  resetModal = () => {
     this.setState({
       displayModal: false,
       username: '',
@@ -52,21 +67,45 @@ class LoginModal extends Component {
   render() {
     const {
       displayModal,
-      loggingIn
+      loggingIn,
+      username,
+      password
     } = this.state;
 
     return (
-      <Modal title="Title"
+      <Modal title="Login"
         visible={displayModal}
         okText={'Login'}
         onOk={this.handleLogin}
         confirmLoading={loggingIn}
-        onCancel={this.handleCancel}
+        onCancel={this.resetModal}
       >
-        <p>Login</p>
+        <FormItem>
+          <Input
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder="Username"
+            value={username}
+            name="username"
+            onChange={this.handleInput}
+          />
+        </FormItem>
+        <FormItem>
+          <Input
+            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            type="password"
+            placeholder="Password"
+            value={password}
+            name="password"
+            onChange={this.handleInput}
+          />
+        </FormItem>
       </Modal>
     )
   }
+}
+
+LoginModal.propTypes = {
+  updateLoggedInStatus: PropTypes.func.isRequired
 }
 
 export default LoginModal;

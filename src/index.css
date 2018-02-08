@@ -8,3 +8,8 @@
   display: flex;
   justify-content: center;
 }
+
+/* remove unnecessary border */
+.ant-menu-horizontal {
+  border-bottom: 0px;
+}

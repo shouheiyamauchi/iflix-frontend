@@ -30,6 +30,10 @@ class Nav extends Component {
   }
 
   render() {
+    const {
+      loggedIn
+    } = this.props;
+
     return (
       <Header>
         <div className={styles.logoContainer}>
@@ -43,7 +47,7 @@ class Nav extends Component {
           onClick={itemProps => {this.handleMenuClick(itemProps)}}
         >
           <Item key="movies">Movies</Item>
-          {localStorage.getItem('iflixAuth') ? (
+          {loggedIn ? (
             <Item key="logout">Logout</Item>
           ) : (
             <Item key="login"><span>Login</span></Item>
