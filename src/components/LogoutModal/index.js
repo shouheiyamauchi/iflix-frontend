@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-class Ratings extends Component {
+class LogoutModal extends Component {
   render() {
     return (
       <div></div>
@@ -10,4 +10,4 @@ class Ratings extends Component {
   }
 }
 
-export default Ratings;
+export default LogoutModal;
