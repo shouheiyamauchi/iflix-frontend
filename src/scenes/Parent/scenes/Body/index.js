@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
 import ContentsList from './scenes/ContentsList';
-
 const { Content } = Layout;
 
 class Body extends Component {

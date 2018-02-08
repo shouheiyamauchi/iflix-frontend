@@ -13,7 +13,7 @@ class ContentList extends Component {
     super(props);
 
     this.state = {
-      loading: true,
+      contentLoading: true,
       contents: {},
       paginationConfig: {
         current: 0,
@@ -51,7 +51,7 @@ class ContentList extends Component {
   }
 
   contentListApiCall = (targetPage, newPageSize, includeRating) => {
-    this.setState({ loading: true });
+    this.setState({ contentLoading: true });
 
     axios.get('http://localhost:3001/api/v1/contents', {
         params: {
@@ -61,11 +61,11 @@ class ContentList extends Component {
         }
       })
       .then(response => {
-        const contentsListData = response.data.data
-        const contents = this.generateContentsObject(contentsListData)
+        const contentsListData = response.data.data;
+        const contents = this.generateContentsObject(contentsListData);
 
         this.setState(update(this.state, {
-          loading: { $set: false },
+          contentLoading: { $set: false },
           paginationConfig: {
             current: { $set: contentsListData.page },
             pageSize: { $set: contentsListData.limit },
@@ -100,7 +100,7 @@ class ContentList extends Component {
     const {
       paginationConfig,
       contents,
-      loading
+      contentLoading
     } = this.state
 
     return (
@@ -110,7 +110,7 @@ class ContentList extends Component {
           size="large"
           pagination={paginationConfig}
           dataSource={contents[paginationConfig.current]}
-          loading={loading}
+          loading={contentLoading}
           renderItem={content => (
             <Item
               key={content.title}

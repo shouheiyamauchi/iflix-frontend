@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
 import logo from './images/logo.png';
 import styles from './styles.module.scss';
-
 const { Header } = Layout, { Item } = Menu;
 
 class Nav extends Component {
@@ -12,6 +12,21 @@ class Nav extends Component {
     // state to capture current page
     this.state = {
     };
+  }
+
+  handleMenuClick = menuItemProps => {
+    const menuItemKey = menuItemProps.key;
+
+    switch(menuItemKey) {
+      case 'movies':
+        break;
+      case 'logout':
+        break;
+      case 'login':
+        this.props.openLoginModal();
+        break;
+      default:
+    }
   }
 
   render() {
@@ -25,13 +40,22 @@ class Nav extends Component {
           mode="horizontal"
           defaultSelectedKeys={['1']}
           style={{ lineHeight: '64px' }}
+          onClick={itemProps => {this.handleMenuClick(itemProps)}}
         >
-          <Item key="1">Movies</Item>
-          <Item key="2">Signup</Item>
+          <Item key="movies">Movies</Item>
+          {localStorage.getItem('iflixAuth') ? (
+            <Item key="logout">Logout</Item>
+          ) : (
+            <Item key="login"><span>Login</span></Item>
+          )}
         </Menu>
       </Header>
     );
   }
+}
+
+Nav.propTypes = {
+  openLoginModal: PropTypes.func.isRequired
 }
 
 export default Nav;
