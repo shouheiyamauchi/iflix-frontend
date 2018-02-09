@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Progress } from 'antd';
 import logo from './images/logo.png';

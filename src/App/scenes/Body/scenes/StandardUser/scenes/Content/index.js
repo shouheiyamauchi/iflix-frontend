@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import querystring from 'querystring';
-import { Card } from 'antd';
 import RatingModal from './components/RatingModal';
 import Video from './components/Video';
 import Info from './components/Info';
@@ -14,6 +13,8 @@ class Content extends Component {
       loadingContent: true,
       contentData: {},
       playPercent: 0,
+      loadingIndividualRating: true,
+      alreadyRated: false,
       displayRatingModal: false,
       postingRating: false,
       userRating: 0
@@ -25,11 +26,6 @@ class Content extends Component {
   }
 
   getContentApiCall = () => {
-    const params = querystring.stringify({
-      username: this.state.username,
-      password: this.state.password
-    });
-
     axios.get('http://localhost:3001/api/v1/contents/' + this.props.match.params.id)
       .then(response => {
         const contentData = response.data.data;
@@ -57,7 +53,28 @@ class Content extends Component {
   }
 
   openRatingModal = () => {
+    this.getIndividualRatingApiCall();
     this.setState({ displayRatingModal: true });
+  }
+
+  getIndividualRatingApiCall = () => {
+    const userData = JSON.parse(localStorage.getItem('iflixAuth'));
+    const params = querystring.stringify({
+      contentId: this.props.match.params.id,
+      userId: userData.userId
+    });
+    const authHeaders = { headers: { 'Authorization': 'JWT ' + userData.token } }
+
+    axios.get('http://localhost:3001/api/v1/ratings?' + params, {}, authHeaders)
+      .then(response => {
+        const ratingData = response.data.data;
+        // if result found, user has already made a rating
+        this.setState({ alreadyRated: true, loadingIndividualRating: false, userRating: ratingData.stars });
+      })
+      .catch(error => {
+        // user hasn't rated if no results found
+        this.setState({ alreadyRated: false, loadingIndividualRating: false });
+      });
   }
 
   selectRating = rating => {
@@ -99,12 +116,16 @@ class Content extends Component {
       loadingContent,
       contentData,
       playPercent,
+      loadingIndividualRating,
+      alreadyRated,
       displayRatingModal,
       postingRating,
       userRating
     } = this.state;
 
     const ratingModalProps = {
+      loadingIndividualRating,
+      alreadyRated,
       userRating,
       displayRatingModal,
       selectRating :this.selectRating,

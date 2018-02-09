@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { Card, Tooltip } from 'antd';
 import StarRatings from 'react-star-ratings';
@@ -7,12 +7,12 @@ const Info = props => {
   const {
     loadingContent,
     contentData
-  } = props
+  } = props;
 
   const cardStyle = {
     width: '100%',
     borderRadius: '5px'
-  }
+  };
 
   return (
     <Card title={contentData.title} loading={loadingContent} bordered={false} style={cardStyle}>

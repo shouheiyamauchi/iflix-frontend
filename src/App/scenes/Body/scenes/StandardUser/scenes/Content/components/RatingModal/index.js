@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'antd';
+import { Modal, Spin } from 'antd';
 import StarRatings from 'react-star-ratings';
 import styles from './styles.module.scss';
 
 const RatingModal = props => {
   const {
+    loadingIndividualRating,
+    alreadyRated,
     userRating,
     displayRatingModal,
     selectRating,
@@ -13,6 +15,12 @@ const RatingModal = props => {
     postRatingApiCall,
     closeRatingModal
   } = props;
+
+  const promptRatingProps = {
+    alreadyRated,
+    userRating,
+    selectRating
+  };
 
   return (
     <Modal title="We hope you enjoyed the movie!"
@@ -23,6 +31,41 @@ const RatingModal = props => {
       onCancel={closeRatingModal}
     >
       <div className={styles.modalContents}>
+        {loadingIndividualRating ? (
+          <Spin />
+        ) : (
+          <PromptRating {...promptRatingProps} />
+        )}
+      </div>
+    </Modal>
+  )
+}
+
+const PromptRating = props => {
+  const {
+    alreadyRated,
+    userRating,
+    selectRating
+  } = props;
+
+  if (alreadyRated) {
+    return (
+      <div>
+        <h3>
+          You have already rated this movie:
+        </h3>
+        <StarRatings
+          rating={userRating}
+          starRatedColor="red"
+          numberOfStars={5}
+          starDimension="30"
+          starSpacing="0"
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div>
         <h3>
           Please give the movie a rating out of 5 below:
         </h3>
@@ -35,17 +78,25 @@ const RatingModal = props => {
           changeRating={selectRating}
         />
       </div>
-    </Modal>
-  )
+    );
+  };
 }
 
 RatingModal.propTypes = {
+  loadingIndividualRating: PropTypes.bool.isRequired,
+  alreadyRated: PropTypes.bool.isRequired,
   userRating: PropTypes.number.isRequired,
-  displayRatingModal: PropTypes.func.isRequired,
   displayRatingModal: PropTypes.bool.isRequired,
   selectRating: PropTypes.func.isRequired,
   postRatingApiCall: PropTypes.func.isRequired,
+  postingRating: PropTypes.bool.isRequired,
   closeRatingModal: PropTypes.func.isRequired
+}
+
+PromptRating.propTypes = {
+  alreadyRated: PropTypes.bool.isRequired,
+  userRating: PropTypes.number.isRequired,
+  selectRating: PropTypes.func.isRequired
 }
 
 export default RatingModal;
