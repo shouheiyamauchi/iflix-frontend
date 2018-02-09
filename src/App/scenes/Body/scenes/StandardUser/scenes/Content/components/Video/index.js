@@ -6,33 +6,47 @@ import styles from './styles.module.scss';
 
 const Video = props => {
   const {
+    loadingContent,
     playPercent,
-    playVideo
+    playVideo,
+    contentLoadingError
   } = props;
 
-  return (
-    <div className={styles.container}>
-      {playPercent === 0 ? (
-        <div onClick={playVideo} className={styles.videoPreview}>
+  if (loadingContent || contentLoadingError) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.videoPreviewLoading}>
           <Icon type="play-circle-o" />
         </div>
-      ) : (
-        <div>
-          <div className={styles.videoPlaying}>
-            <img alt="iflix logo" src={logo} />
+      </div>
+    );
+  } else {
+    return (
+      <div className={styles.container}>
+        {playPercent === 0 ? (
+          <div onClick={playVideo} className={styles.videoPreviewLoaded}>
+            <Icon type="play-circle-o" />
           </div>
-          <div className={styles.videoProgressBar}>
-            <Progress percent={playPercent} showInfo={false} status="exception" />
+        ) : (
+          <div>
+            <div className={styles.videoPlaying}>
+              <img alt="iflix logo" src={logo} />
+            </div>
+            <div className={styles.videoProgressBar}>
+              <Progress percent={playPercent} showInfo={false} status="exception" />
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 }
 
 Video.propTypes = {
+  loadingContent: PropTypes.bool.isRequired,
   playPercent: PropTypes.number.isRequired,
-  playVideo: PropTypes.func.isRequired
+  playVideo: PropTypes.func.isRequired,
+  contentLoadingError: PropTypes.bool.isRequired
 }
 
 export default Video;

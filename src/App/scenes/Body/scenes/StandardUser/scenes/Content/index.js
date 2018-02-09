@@ -12,13 +12,15 @@ class Content extends Component {
     this.state = {
       loadingContent: true,
       contentData: {},
+      contentLoadingError: false,
       playPercent: 0,
       loadingIndividualRating: true,
       alreadyRated: false,
       displayRatingModal: false,
       postingRating: false,
-      userRating: 0
-    }
+      userRating: 0,
+      ratingLoadingError: false
+    };
   }
 
   componentDidMount() {
@@ -36,7 +38,10 @@ class Content extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        this.setState({
+          loadingContent: false,
+          contentLoadingError: true
+        });
       });
   }
 
@@ -68,12 +73,29 @@ class Content extends Component {
     axios.get('http://localhost:3001/api/v1/ratings?' + params, {}, authHeaders)
       .then(response => {
         const ratingData = response.data.data;
-        // if result found, user has already made a rating
-        this.setState({ alreadyRated: true, loadingIndividualRating: false, userRating: ratingData.stars });
+
+        if (ratingData) {
+          // if result found, user has already made a rating
+          this.setState({
+            ratingLoadingError: false,
+            loadingIndividualRating: false,
+            alreadyRated: true,
+            userRating: ratingData.stars
+          });
+        } else {
+          // user hasn't rated if no results found
+          this.setState({
+            ratingLoadingError: false,
+            loadingIndividualRating: false,
+            alreadyRated: false
+          });
+        }
       })
       .catch(error => {
-        // user hasn't rated if no results found
-        this.setState({ alreadyRated: false, loadingIndividualRating: false });
+        this.setState({
+          ratingLoadingError: true,
+          loadingIndividualRating: false
+        });
       });
   }
 
@@ -95,12 +117,11 @@ class Content extends Component {
     axios.post('http://localhost:3001/api/v1/ratings?' + params, {}, authHeaders)
       .then(response => {
         const ratingData = response.data.data;
-        console.log(ratingData)
         // update rating here
         this.closeRatingModal();
       })
       .catch(error => {
-        console.log(error);
+        this.setState({ ratingLoadingError: true, postingRating: false });
       });
   }
 
@@ -115,12 +136,14 @@ class Content extends Component {
     const {
       loadingContent,
       contentData,
+      contentLoadingError,
       playPercent,
       loadingIndividualRating,
       alreadyRated,
       displayRatingModal,
       postingRating,
-      userRating
+      userRating,
+      ratingLoadingError
     } = this.state;
 
     const ratingModalProps = {
@@ -131,16 +154,20 @@ class Content extends Component {
       selectRating :this.selectRating,
       postingRating,
       postRatingApiCall: this.postRatingApiCall,
-      closeRatingModal: this.closeRatingModal
+      closeRatingModal: this.closeRatingModal,
+      ratingLoadingError
     };
 
     const videoProps = {
+      loadingContent,
       playPercent,
-      playVideo: this.playVideo
+      playVideo: this.playVideo,
+      contentLoadingError
     };
     const infoProps = {
       loadingContent,
-      contentData
+      contentData,
+      contentLoadingError
     };
 
     return (

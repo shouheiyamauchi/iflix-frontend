@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Spin } from 'antd';
+import { Modal, Spin, Button } from 'antd';
 import StarRatings from 'react-star-ratings';
 import styles from './styles.module.scss';
 
@@ -13,7 +13,8 @@ const RatingModal = props => {
     selectRating,
     postingRating,
     postRatingApiCall,
-    closeRatingModal
+    closeRatingModal,
+    ratingLoadingError
   } = props;
 
   const promptRatingProps = {
@@ -22,23 +23,36 @@ const RatingModal = props => {
     selectRating
   };
 
-  return (
-    <Modal title="We hope you enjoyed the movie!"
-      visible={displayRatingModal}
-      okText={'Post Rating'}
-      onOk={postRatingApiCall}
-      confirmLoading={postingRating}
-      onCancel={closeRatingModal}
-    >
-      <div className={styles.modalContents}>
-        {loadingIndividualRating ? (
-          <Spin />
-        ) : (
-          <PromptRating {...promptRatingProps} />
-        )}
-      </div>
-    </Modal>
-  )
+  if (ratingLoadingError) {
+    return (
+      <Modal title="Error"
+        visible={displayRatingModal}
+        onOk={closeRatingModal}
+        onCancel={closeRatingModal}
+      >
+        There was an error in loading your request
+      </Modal>
+    );
+  } else {
+    return (
+      <Modal title="We hope you enjoyed the movie!"
+        visible={displayRatingModal}
+        okText={'Post Rating'}
+        onOk={postRatingApiCall}
+        confirmLoading={postingRating}
+        onCancel={closeRatingModal}
+
+      >
+        <div className={styles.modalContents}>
+          {loadingIndividualRating ? (
+            <Spin />
+          ) : (
+            <PromptRating {...promptRatingProps} />
+          )}
+        </div>
+      </Modal>
+    );
+  }
 }
 
 const PromptRating = props => {
@@ -90,7 +104,8 @@ RatingModal.propTypes = {
   selectRating: PropTypes.func.isRequired,
   postRatingApiCall: PropTypes.func.isRequired,
   postingRating: PropTypes.bool.isRequired,
-  closeRatingModal: PropTypes.func.isRequired
+  closeRatingModal: PropTypes.func.isRequired,
+  ratingLoadingError: PropTypes.bool.isRequired
 }
 
 PromptRating.propTypes = {
