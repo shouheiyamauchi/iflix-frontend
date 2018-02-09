@@ -19,9 +19,9 @@ class Body extends Component {
 
     return (
       <Layout.Content style={containerStyle}>
-        <Route exact path="/" component={ContentsList}/>
+        <Route exact path="/contents" component={ContentsList}/>
         <StandardUser authToken={authToken}>
-          <Route path="/content/:id" component={Content} />
+          <Route path="/contents/:id" component={Content} />
         </StandardUser>
       </Layout.Content>
     );

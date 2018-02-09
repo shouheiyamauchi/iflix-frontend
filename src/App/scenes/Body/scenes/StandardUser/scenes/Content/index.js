@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import querystring from 'querystring';
-import Info from './components/Info';
 import { Card } from 'antd';
+import Video from './components/Video';
+import Info from './components/Info';
 
 class Content extends Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class Content extends Component {
 
     this.state = {
       loadingContent: true,
-      contentData: {}
+      contentData: {},
+      playPercent: 0
     }
   }
 
@@ -28,8 +30,6 @@ class Content extends Component {
       .then(response => {
         const contentData = response.data.data;
 
-        console.log(contentData)
-
         this.setState({
           loadingContent: false,
           contentData
@@ -40,14 +40,31 @@ class Content extends Component {
       });
   }
 
+  playVideo = () => {
+    const loopId = setInterval(() => {
+      if (this.state.playPercent !== 100) {
+        this.setState({ playPercent: this.state.playPercent + 1 });
+      } else {
+        clearInterval(loopId);
+      };
+    }, 25);
+  }
+
   render() {
     const {
       loadingContent,
-      contentData
+      contentData,
+      playPercent
     } = this.state;
 
+    const videoProps = { playPercent, playVideo: this.playVideo };
+    const infoProps = { loadingContent, contentData };
+
     return (
-      <Info {...this.state} />
+      <div>
+        <Video {...videoProps} />
+        <Info {...infoProps} />
+      </div>
     );
   }
 }

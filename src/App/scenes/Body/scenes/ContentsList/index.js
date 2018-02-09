@@ -73,6 +73,7 @@ class ContentList extends Component {
         }));
       })
       .catch(error => {
+        this.setState({ contentLoading: false });
         console.log(error);
       });
   }
