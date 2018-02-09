@@ -11,7 +11,7 @@ class Parent extends Component {
     super(props);
 
     this.state = {
-      authToken: null
+      userData: null
     };
   }
 
@@ -24,12 +24,12 @@ class Parent extends Component {
   }
 
   updateLoggedInStatus = () => {
-    this.setState({ authToken: JSON.parse(localStorage.getItem('iflixAuth')) });
+    this.setState({ userData: JSON.parse(localStorage.getItem('iflixAuth')) });
   }
 
   render() {
     const {
-      authToken
+      userData
     } = this.state;
 
     return (
@@ -37,8 +37,8 @@ class Parent extends Component {
         <Layout>
           <LoginModal ref={loginModal => this.loginModal = loginModal} updateLoggedInStatus={this.updateLoggedInStatus} />
           <LogoutModal ref={logoutModal => this.logoutModal = logoutModal} updateLoggedInStatus={this.updateLoggedInStatus} />
-          <Nav openLoginModal={this.openLoginModal} openLogoutModal={this.openLogoutModal} authToken={authToken} />
-          <Body authToken={authToken} />
+          <Nav openLoginModal={this.openLoginModal} openLogoutModal={this.openLogoutModal} userData={userData} />
+          <Body userData={userData} />
         </Layout>
       </Router>
     );

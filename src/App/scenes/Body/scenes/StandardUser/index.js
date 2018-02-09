@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const StandardUser = props => {
-  if (props.authToken) {
+  if (props.userData) {
     return (
       <div>
         {props.children}
@@ -18,7 +18,7 @@ const StandardUser = props => {
 }
 
 StandardUser.propTypes = {
-  authToken: PropTypes.object
+  userData: PropTypes.object
 }
 
 export default StandardUser;

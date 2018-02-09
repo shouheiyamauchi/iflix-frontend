@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 
 const ProfileIcon = props => {
   const {
-    authToken
+    userData
   } = props;
 
   return (
     <div>
-      {authToken ? ('Logged in as: ' + authToken.username) : (null)}
+      {userData ? ('Logged in as: ' + userData.username) : (null)}
     </div>
   );
 }
 
 ProfileIcon.propTypes = {
-  authToken: PropTypes.object
+  userData: PropTypes.object
 }
 
 export default ProfileIcon;

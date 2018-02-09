@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Progress } from 'antd';
+import logo from './images/logo.png';
 import styles from './styles.module.scss';
 
 const Video = props => {
@@ -18,7 +19,7 @@ const Video = props => {
       ) : (
         <div>
           <div className={styles.videoPlaying}>
-            Playing Video
+            <img alt="iflix logo" src={logo} />
           </div>
           <div className={styles.videoProgressBar}>
             <Progress percent={playPercent} showInfo={false} status="exception" />

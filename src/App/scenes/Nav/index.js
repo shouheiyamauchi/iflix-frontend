@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import ProfileIcon from './components/ProfileIcon';
 import logo from './images/logo.png';
@@ -12,6 +13,7 @@ class Nav extends Component {
 
     // state to capture current page
     this.state = {
+      redirectPage: ''
     };
   }
 
@@ -20,6 +22,7 @@ class Nav extends Component {
 
     switch(menuItemKey) {
       case 'movies':
+        this.goToPage('/contents');
         break;
       case 'logout':
         this.props.openLogoutModal();
@@ -31,42 +34,55 @@ class Nav extends Component {
     }
   }
 
+  goToPage = redirectPage => {
+    this.setState({ redirectPage }, () => {
+      this.setState({ redirectPage: '' });
+    });
+  }
+
   render() {
     const {
-      authToken
+      redirectPage
+    } = this.state;
+
+    const {
+      userData
     } = this.props;
 
     return (
-      <Header>
-        <div className={styles.logoContainer}>
-          <img alt="iflix logo" src={logo} />
-        </div>
-        <div style={{float: 'left'}}>
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={['movies']}
-            style={{ lineHeight: '64px' }}
-            onClick={itemProps => {this.handleMenuClick(itemProps)}}
-          >
-            <Item key="movies">Movies</Item>
-            {authToken ? (
-              <Item key="logout">Logout</Item>
-            ) : (
-              <Item key="login"><span>Login</span></Item>
-            )}
-          </Menu>
-        </div>
-        <div style={{float: 'right'}}>
-          <ProfileIcon authToken={authToken} />
-        </div>
-      </Header>
+      <div>
+        {redirectPage ? (<Redirect push to={redirectPage} />) : (null)}
+        <Header>
+          <div className={styles.logoContainer}>
+            <img alt="iflix logo" src={logo} />
+          </div>
+          <div style={{float: 'left'}}>
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              defaultSelectedKeys={['movies']}
+              style={{ lineHeight: '64px' }}
+              onClick={itemProps => {this.handleMenuClick(itemProps)}}
+            >
+              <Item key="movies">Movies</Item>
+              {userData ? (
+                <Item key="logout">Logout</Item>
+              ) : (
+                <Item key="login"><span>Login</span></Item>
+              )}
+            </Menu>
+          </div>
+          <div style={{float: 'right'}}>
+            <ProfileIcon userData={userData} />
+          </div>
+        </Header>
+      </div>
     );
   }
 }
 
 Nav.propTypes = {
-  authToken: PropTypes.object,
+  userData: PropTypes.object,
   openLoginModal: PropTypes.func.isRequired,
   openLogoutModal: PropTypes.func.isRequired
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { List, Tooltip, Button } from 'antd';
 import StarRatings from 'react-star-ratings';
@@ -49,7 +50,9 @@ const ContentSummary = props => {
       {content.description}
       <br />
       <br />
-      <Button type="danger">Watch Movie</Button>
+      <Link to={'/contents/' + content._id}>
+        <Button type="danger">Watch Movie</Button>
+      </Link>
     </Item>
   );
 }

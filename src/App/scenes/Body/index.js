@@ -9,7 +9,7 @@ import Content from './scenes/StandardUser/scenes/Content';
 class Body extends Component {
   render() {
     const {
-      authToken
+      userData
     } = this.props;
 
     const containerStyle = {
@@ -20,7 +20,7 @@ class Body extends Component {
     return (
       <Layout.Content style={containerStyle}>
         <Route exact path="/contents" component={ContentsList}/>
-        <StandardUser authToken={authToken}>
+        <StandardUser userData={userData}>
           <Route path="/contents/:id" component={Content} />
         </StandardUser>
       </Layout.Content>
@@ -29,7 +29,7 @@ class Body extends Component {
 }
 
 Body.propTypes = {
-  authToken: PropTypes.object
+  userData: PropTypes.object
 }
 
 export default Body;
