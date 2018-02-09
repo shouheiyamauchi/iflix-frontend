@@ -1,24 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Card } from 'antd';
 
 const StandardUser = props => {
-  if (props.userData) {
+  const {
+    children,
+    refs,
+    userData,
+    openLoginModal
+  } = props;
+
+  const cardStyle = {
+    width: '100%'
+  };
+
+  if (userData) {
     return (
       <div>
-        {props.children}
+        {children}
       </div>
-    )
+    );
   } else {
+    if (refs.loginModal) openLoginModal();
+
     return (
-      <div>
-        You must be logged in
-      </div>
-    )
+      <Card title="Login Required" bordered={false} style={cardStyle}>
+        Please login to access this page
+      </Card>
+    );
   };
 }
 
 StandardUser.propTypes = {
-  userData: PropTypes.object
+  refs: PropTypes.object,
+  userData: PropTypes.object,
+  openLoginModal: PropTypes.func.isRequired
 }
 
 export default StandardUser;

@@ -16,7 +16,7 @@ class Parent extends Component {
   }
 
   openLoginModal = () => {
-    this.loginModal.openLoginModal();
+    this.refs.loginModal.openLoginModal();
   }
 
   openLogoutModal = () => {
@@ -35,10 +35,10 @@ class Parent extends Component {
     return (
       <Router>
         <Layout>
-          <LoginModal ref={loginModal => this.loginModal = loginModal} updateLoggedInStatus={this.updateLoggedInStatus} />
+          <LoginModal ref='loginModal' updateLoggedInStatus={this.updateLoggedInStatus} />
           <LogoutModal ref={logoutModal => this.logoutModal = logoutModal} updateLoggedInStatus={this.updateLoggedInStatus} />
           <Nav openLoginModal={this.openLoginModal} openLogoutModal={this.openLogoutModal} userData={userData} />
-          <Body userData={userData} />
+          <Body refs={this.refs} openLoginModal={this.openLoginModal} userData={userData} />
         </Layout>
       </Router>
     );

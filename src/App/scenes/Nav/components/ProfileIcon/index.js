@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'antd';
 
 const ProfileIcon = props => {
   const {
@@ -8,7 +9,7 @@ const ProfileIcon = props => {
 
   return (
     <div>
-      {userData ? ('Logged in as: ' + userData.username) : (null)}
+      {userData ? (<Button icon="user" type="danger">{'Logged in as: ' + userData.username}</Button>) : (null)}
     </div>
   );
 }

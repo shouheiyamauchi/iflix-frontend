@@ -37,8 +37,8 @@ const RatingModal = props => {
     return (
       <Modal title="We hope you enjoyed the movie!"
         visible={displayRatingModal}
-        okText={'Post Rating'}
-        onOk={postRatingApiCall}
+        okText={alreadyRated ? 'OK' : 'Post Rating'}
+        onOk={alreadyRated ? closeRatingModal : postRatingApiCall}
         confirmLoading={postingRating}
         onCancel={closeRatingModal}
 

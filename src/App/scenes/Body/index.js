@@ -9,7 +9,9 @@ import Content from './scenes/StandardUser/scenes/Content';
 class Body extends Component {
   render() {
     const {
-      userData
+      refs,
+      userData,
+      openLoginModal
     } = this.props;
 
     const containerStyle = {
@@ -17,19 +19,25 @@ class Body extends Component {
       minHeight: 'calc(100vh - 64px)'
     }
 
+    const standardUserProps = {
+      refs,
+      userData,
+      openLoginModal
+    }
+
     return (
       <Layout.Content style={containerStyle}>
         <Route exact path="/contents" component={ContentsList}/>
-        <StandardUser userData={userData}>
-          <Route path="/contents/:id" component={Content} />
-        </StandardUser>
+        <Route path="/contents/:id" render={(urlParams) => <StandardUser {...standardUserProps}><Content {...urlParams} /></StandardUser>} />
       </Layout.Content>
     );
   }
 }
 
 Body.propTypes = {
-  userData: PropTypes.object
+  refs: PropTypes.object,
+  userData: PropTypes.object,
+  openLoginModal: PropTypes.func.isRequired
 }
 
 export default Body;
