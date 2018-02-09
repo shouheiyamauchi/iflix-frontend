@@ -38,7 +38,7 @@ class Parent extends Component {
           <LoginModal ref={loginModal => this.loginModal = loginModal} updateLoggedInStatus={this.updateLoggedInStatus} />
           <LogoutModal ref={logoutModal => this.logoutModal = logoutModal} updateLoggedInStatus={this.updateLoggedInStatus} />
           <Nav openLoginModal={this.openLoginModal} openLogoutModal={this.openLogoutModal} authToken={authToken} />
-          <Body />
+          <Body authToken={authToken} />
         </Layout>
       </Router>
     );
