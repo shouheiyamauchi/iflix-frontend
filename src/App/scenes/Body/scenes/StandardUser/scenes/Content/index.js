@@ -50,6 +50,7 @@ class Content extends Component {
         this.setState({ playPercent: this.state.playPercent + 1 });
       } else {
         clearInterval(loopId);
+        this.setState({ playPercent: 0 });
         this.openRatingModal();
       };
     }, 25);
@@ -57,6 +58,10 @@ class Content extends Component {
 
   openRatingModal = () => {
     this.setState({ displayRatingModal: true });
+  }
+
+  selectRating = rating => {
+    this.setState({ userRating: rating });
   }
 
   postRatingApiCall = () => {
@@ -99,9 +104,23 @@ class Content extends Component {
       userRating
     } = this.state;
 
-    const ratingModalProps = { displayRatingModal, postingRating, postRatingApiCall: this.postRatingApiCall, closeRatingModal: this.closeRatingModal }
-    const videoProps = { playPercent, playVideo: this.playVideo };
-    const infoProps = { loadingContent, contentData };
+    const ratingModalProps = {
+      userRating,
+      displayRatingModal,
+      selectRating :this.selectRating,
+      postingRating,
+      postRatingApiCall: this.postRatingApiCall,
+      closeRatingModal: this.closeRatingModal
+    };
+
+    const videoProps = {
+      playPercent,
+      playVideo: this.playVideo
+    };
+    const infoProps = {
+      loadingContent,
+      contentData
+    };
 
     return (
       <div>
