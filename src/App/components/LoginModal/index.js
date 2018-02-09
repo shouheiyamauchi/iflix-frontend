@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import querystring from 'querystring';
-import { Modal } from 'antd';
+import { Modal, Form, Icon, Input } from 'antd';
 
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
 const FormItem = Form.Item;
 
 class LoginModal extends Component {
@@ -41,7 +40,7 @@ class LoginModal extends Component {
     const params = querystring.stringify({
       username: this.state.username,
       password: this.state.password
-    })
+    });
 
     axios.post('http://localhost:3001/api/v1/users/login?' + params)
       .then(response => {
@@ -59,6 +58,7 @@ class LoginModal extends Component {
   resetModal = () => {
     this.setState({
       displayModal: false,
+      loggingIn: false,
       username: '',
       password: ''
     });

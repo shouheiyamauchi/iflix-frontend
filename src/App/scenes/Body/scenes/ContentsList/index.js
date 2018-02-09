@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import querystring from 'querystring';
 import update from 'immutability-helper';
-import moment from 'moment';
-import { List, Tooltip, Button } from 'antd';
-import StarRatings from 'react-star-ratings';
+import { List, } from 'antd';
+import ContentSummary from './components/ContentSummary'
 import styles from './styles.module.scss';
-
-const { Item } = List;
 
 class ContentList extends Component {
   constructor(props) {
@@ -53,13 +51,13 @@ class ContentList extends Component {
   contentListApiCall = (targetPage, newPageSize, includeRating) => {
     this.setState({ contentLoading: true });
 
-    axios.get('http://localhost:3001/api/v1/contents', {
-        params: {
-          pageNo: targetPage,
-          resultsPerPage: newPageSize,
-          includeRating
-        }
-      })
+    const params = querystring.stringify({
+      pageNo: targetPage,
+      resultsPerPage: newPageSize,
+      includeRating
+    });
+
+    axios.get('http://localhost:3001/api/v1/contents?' + params)
       .then(response => {
         const contentsListData = response.data.data;
         const contents = this.generateContentsObject(contentsListData);
@@ -101,7 +99,7 @@ class ContentList extends Component {
       paginationConfig,
       contents,
       contentLoading
-    } = this.state
+    } = this.state;
 
     return (
       <div className={styles.listContainer}>
@@ -112,39 +110,7 @@ class ContentList extends Component {
           dataSource={contents[paginationConfig.current]}
           loading={contentLoading}
           renderItem={content => (
-            <Item
-              key={content.title}
-              extra={<img style={{width: 150, marginBottom: 10, borderRadius: 5, filter: 'drop-shadow(5px 5px 6px #acacac)'}} alt="logo" src={content.thumbnail} />}
-            >
-              <h1>{content.title}</h1>
-              {content.averageRating ? (
-                <Tooltip placement="topLeft" title="Watch movie to rate content">
-                  <div>
-                    <StarRatings
-                      rating={content.averageRating}
-                      starRatedColor="red"
-                      numberOfStars={5}
-                      starDimension="20"
-                      starSpacing="0"
-                    />
-                  </div>
-                </Tooltip>
-              ) : (
-                <div>
-                  Not Enough Ratings
-                </div>
-
-              )}
-              {content.genre}
-              <br />
-              {moment(content.releaseDate).format('LL')}
-              <br />
-              <br />
-              {content.description}
-              <br />
-              <br />
-              <Button type="danger">Watch Movie</Button>
-            </Item>
+            <ContentSummary content={content} />
           )}
         />
       </div>
