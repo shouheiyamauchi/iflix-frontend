@@ -25,7 +25,8 @@ const RatingModal = props => {
 
   if (ratingLoadingError) {
     return (
-      <Modal title="Error"
+      <Modal
+        title="Error"
         visible={displayRatingModal}
         onOk={closeRatingModal}
         onCancel={closeRatingModal}
@@ -35,13 +36,13 @@ const RatingModal = props => {
     );
   } else {
     return (
-      <Modal title="We hope you enjoyed the movie!"
+      <Modal
+        title="We hope you enjoyed the movie!"
         visible={displayRatingModal}
         okText={alreadyRated ? 'OK' : 'Post Rating'}
         onOk={alreadyRated ? closeRatingModal : postRatingApiCall}
         confirmLoading={postingRating}
         onCancel={closeRatingModal}
-
       >
         <div className={styles.modalContents}>
           {loadingIndividualRating ? (
@@ -52,7 +53,7 @@ const RatingModal = props => {
         </div>
       </Modal>
     );
-  }
+  };
 }
 
 const PromptRating = props => {

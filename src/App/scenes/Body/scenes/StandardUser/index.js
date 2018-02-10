@@ -21,6 +21,7 @@ const StandardUser = props => {
       </div>
     );
   } else {
+    // prevent function from firing on null refs
     if (refs.loginModal) openLoginModal();
 
     return (

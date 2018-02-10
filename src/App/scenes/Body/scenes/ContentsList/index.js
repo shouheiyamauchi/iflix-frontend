@@ -17,18 +17,18 @@ class ContentList extends Component {
         current: 0,
         pageSize: 10,
         total: 0,
-        onChange: ((targetPage, pageSize) => {this.changePage(targetPage, this.state.paginationConfig.pageSize, true)}),
+        onChange: ((targetPage, pageSize) => {this.openPage(targetPage, this.state.paginationConfig.pageSize, true)}),
         showSizeChanger: true,
-        onShowSizeChange: ((targetPage, pageSize) => {this.changePage(targetPage, pageSize, true)})
+        onShowSizeChange: ((targetPage, pageSize) => {this.openPage(targetPage, pageSize, true)})
       }
     };
   }
 
   componentDidMount() {
-    this.changePage(1, this.state.paginationConfig.pageSize, true);
+    this.openPage(1, this.state.paginationConfig.pageSize, true);
   }
 
-  changePage = (targetPage, newPageSize, includeRating) => {
+  openPage = (targetPage, newPageSize, includeRating) => {
     if (this.apiCallRequired(targetPage, newPageSize)) {
       this.contentListApiCall(targetPage, newPageSize, includeRating);
     } else {
@@ -79,6 +79,7 @@ class ContentList extends Component {
   }
 
   generateContentsObject = contentsListData => {
+    // keep or reset previously loaded data based on check
     if (this.contentRefreshRequired(contentsListData)) {
       return {
         [contentsListData.page]: contentsListData.docs

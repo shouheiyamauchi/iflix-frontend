@@ -31,12 +31,11 @@ class LoginModal extends Component {
   }
 
   handleLogin = () => {
+    this.setState({ loggingIn: true });
     this.loginApiCall();
   }
 
   loginApiCall = () => {
-    this.setState({ loggingIn: true });
-
     const params = querystring.stringify({
       username: this.state.username,
       password: this.state.password
@@ -72,6 +71,8 @@ class LoginModal extends Component {
       password
     } = this.state;
 
+    const formIconStyle = { color: 'rgba(0,0,0,.25)' }
+
     return (
       <Modal title="Login"
         visible={displayModal}
@@ -82,7 +83,7 @@ class LoginModal extends Component {
       >
         <FormItem>
           <Input
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="user" style={formIconStyle} />}
             placeholder="Username"
             value={username}
             name="username"
@@ -91,7 +92,7 @@ class LoginModal extends Component {
         </FormItem>
         <FormItem>
           <Input
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="lock" style={formIconStyle} />}
             type="password"
             placeholder="Password"
             value={password}

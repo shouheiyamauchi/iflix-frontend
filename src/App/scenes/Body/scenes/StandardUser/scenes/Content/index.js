@@ -58,7 +58,8 @@ class Content extends Component {
   }
 
   openRatingModal = () => {
-    this.getIndividualRatingApiCall();
+    // only perform API call if data not loaded
+    if (this.state.userRating === 0) this.getIndividualRatingApiCall();
     this.setState({ displayRatingModal: true });
   }
 
@@ -164,6 +165,7 @@ class Content extends Component {
       playVideo: this.playVideo,
       contentLoadingError
     };
+
     const infoProps = {
       loadingContent,
       contentData,

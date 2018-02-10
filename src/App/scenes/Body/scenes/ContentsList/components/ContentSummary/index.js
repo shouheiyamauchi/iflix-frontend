@@ -39,7 +39,7 @@ const ContentSummary = props => {
         </Tooltip>
       ) : (
         <div>
-          Not Enough Ratings
+          <strong>Not Enough Ratings</strong>
         </div>
       )}
       {content.genre}
