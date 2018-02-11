@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom'
 import { Layout } from 'antd';
-import ContentsList from './scenes/ContentsList';
+
+import Public from './scenes/Public';
+import ContentsList from './scenes/Public//scenes/ContentsList';
+
 import StandardUser from './scenes/StandardUser';
 import Content from './scenes/StandardUser/scenes/Content';
 
@@ -27,7 +30,7 @@ class Body extends Component {
 
     return (
       <Layout.Content style={containerStyle}>
-        <Route exact path="/contents" component={ContentsList}/>
+        <Route exact path="/contents" render={(urlParams) => <Public><ContentsList {...urlParams} /></Public>} />
         <Route path="/contents/:id" render={(urlParams) => <StandardUser {...standardUserProps}><Content {...urlParams} /></StandardUser>} />
       </Layout.Content>
     );

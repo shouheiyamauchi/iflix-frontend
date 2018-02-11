@@ -8,12 +8,12 @@ class LogoutModal extends Component {
   openLogoutModal = () => {
     confirm({
       title: 'Are you sure to logout?',
-    onOk: () => {
-      localStorage.removeItem('iflixAuth');
-      this.props.updateLoggedInStatus();
-    },
-    onCancel: () => {},
-  });
+      onOk: () => {
+        localStorage.removeItem('iflixAuth');
+        this.props.updateLoggedInStatus();
+      },
+      onCancel: () => {},
+    });
   }
 
   render() {
