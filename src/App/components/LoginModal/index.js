@@ -1,3 +1,4 @@
+import API from 'config/api';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -41,7 +42,7 @@ class LoginModal extends Component {
       password: this.state.password
     });
 
-    axios.post('http://localhost:3001/api/v1/users/login?' + params)
+    axios.post(API.endpoint + 'users/login?' + params)
       .then(response => {
         const userData = response.data.data;
         localStorage.setItem('iflixAuth', JSON.stringify(userData));

@@ -15,9 +15,10 @@
     "react-star-ratings": "^2.2.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-scripts test --env=jsdom"
+    "start": "NODE_PATH=src REACT_APP_STAGE=production react-app-rewired start",
+    "dev": "NODE_PATH=src REACT_APP_STAGE=development react-app-rewired start",
+    "build": "NODE_PATH=src REACT_APP_STAGE=production react-app-rewired build",
+    "test": "NODE_PATH=src REACT_APP_STAGE=test react-scripts test --env=jsdom"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.6.3",

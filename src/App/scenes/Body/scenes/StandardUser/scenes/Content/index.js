@@ -1,3 +1,4 @@
+import API from 'config/api';
 import React, { Component } from 'react';
 import axios from 'axios';
 import querystring from 'querystring';
@@ -28,7 +29,7 @@ class Content extends Component {
   }
 
   getContentApiCall = () => {
-    axios.get('http://localhost:3001/api/v1/contents/' + this.props.match.params.id)
+    axios.get(API.endpoint + 'contents/' + this.props.match.params.id)
       .then(response => {
         const contentData = response.data.data;
 
@@ -71,7 +72,7 @@ class Content extends Component {
     });
     const authHeaders = { headers: { 'Authorization': 'JWT ' + userData.token } }
 
-    axios.get('http://localhost:3001/api/v1/ratings?' + params, {}, authHeaders)
+    axios.get(API.endpoint + 'ratings?' + params, {}, authHeaders)
       .then(response => {
         const ratingData = response.data.data;
 
@@ -115,7 +116,7 @@ class Content extends Component {
     });
     const authHeaders = { headers: { 'Authorization': 'JWT ' + userData.token } }
 
-    axios.post('http://localhost:3001/api/v1/ratings?' + params, {}, authHeaders)
+    axios.post(API.endpoint + 'ratings?' + params, {}, authHeaders)
       .then(response => {
         const ratingData = response.data.data;
         // update rating here

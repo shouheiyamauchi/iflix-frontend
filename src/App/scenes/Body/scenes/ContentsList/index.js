@@ -1,3 +1,4 @@
+import API from 'config/api';
 import React, { Component } from 'react';
 import axios from 'axios';
 import querystring from 'querystring';
@@ -57,7 +58,7 @@ class ContentList extends Component {
       includeRating
     });
 
-    axios.get('http://localhost:3001/api/v1/contents?' + params)
+    axios.get(API.endpoint + 'contents?' + params)
       .then(response => {
         const contentsListData = response.data.data;
         const contents = this.generateContentsObject(contentsListData);
