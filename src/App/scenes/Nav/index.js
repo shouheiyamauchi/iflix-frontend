@@ -55,7 +55,8 @@ class Nav extends Component {
     } = this.state;
 
     const {
-      userData
+      userData,
+      openSignupModal
     } = this.props;
 
     return (
@@ -82,7 +83,7 @@ class Nav extends Component {
             </Menu>
           </div>
           <div style={{float: 'right'}}>
-            <ProfileIcon userData={userData} />
+            <ProfileIcon userData={userData} openSignupModal={openSignupModal} />
           </div>
         </Header>
       </div>
@@ -92,6 +93,7 @@ class Nav extends Component {
 
 Nav.propTypes = {
   userData: PropTypes.object,
+  openSignupModal: PropTypes.func.isRequired,
   openLoginModal: PropTypes.func.isRequired,
   openLogoutModal: PropTypes.func.isRequired
 }

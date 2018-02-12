@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { Layout } from 'antd';
 import Nav from './scenes/Nav'
 import Body from './scenes/Body'
+import SignupModal from './components/SignupModal'
 import LoginModal from './components/LoginModal'
 import LogoutModal from './components/LogoutModal'
 
@@ -15,12 +16,16 @@ class App extends Component {
     };
   }
 
+  openSignupModal = () => {
+    this.refs.signupModal.openSignupModal();
+  }
+
   openLoginModal = () => {
     this.refs.loginModal.openLoginModal();
   }
 
   openLogoutModal = () => {
-    this.logoutModal.openLogoutModal();
+    this.refs.logoutModal.openLogoutModal();
   }
 
   updateLoggedInStatus = () => {
@@ -35,9 +40,15 @@ class App extends Component {
     return (
       <Router>
         <Layout>
+          <SignupModal ref='signupModal' updateLoggedInStatus={this.updateLoggedInStatus} />
           <LoginModal ref='loginModal' updateLoggedInStatus={this.updateLoggedInStatus} />
-          <LogoutModal ref={logoutModal => this.logoutModal = logoutModal} updateLoggedInStatus={this.updateLoggedInStatus} />
-          <Nav openLoginModal={this.openLoginModal} openLogoutModal={this.openLogoutModal} userData={userData} />
+          <LogoutModal ref='logoutModal' updateLoggedInStatus={this.updateLoggedInStatus} />
+          <Nav
+            openSignupModal={this.openSignupModal}
+            openLoginModal={this.openLoginModal}
+            openLogoutModal={this.openLogoutModal}
+            userData={userData}
+          />
           <Body refs={this.refs} openLoginModal={this.openLoginModal} userData={userData} />
         </Layout>
       </Router>

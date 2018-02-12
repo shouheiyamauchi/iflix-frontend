@@ -4,18 +4,24 @@ import { Button } from 'antd';
 
 const ProfileIcon = props => {
   const {
-    userData
+    userData,
+    openSignupModal
   } = props;
 
   return (
     <div>
-      {userData ? (<Button icon="user" type="danger">{'Logged in as: ' + userData.username}</Button>) : (null)}
+      {userData ? (
+        <Button icon="user" type="danger">{'Logged in as: ' + userData.username}</Button>
+      ) : (
+        <Button icon="user" type="danger" onClick={openSignupModal} >Signup</Button>
+      )}
     </div>
   );
 }
 
 ProfileIcon.propTypes = {
-  userData: PropTypes.object
+  userData: PropTypes.object,
+  openSignupModal: PropTypes.func.isRequired
 }
 
 export default ProfileIcon;
