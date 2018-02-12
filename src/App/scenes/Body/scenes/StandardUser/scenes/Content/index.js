@@ -14,18 +14,21 @@ class Content extends Component {
       loadingContent: true,
       contentData: {},
       contentLoadingError: false,
+      loadingRating: true,
+      ratingData: {},
       playPercent: 0,
       loadingIndividualRating: true,
       alreadyRated: false,
       displayRatingModal: false,
       postingRating: false,
       userRating: 0,
-      ratingLoadingError: false
+      individualRatingLoadingError: false
     };
   }
 
   componentDidMount() {
     this.getContentApiCall();
+    this.getRatingsApiCall();
   }
 
   getContentApiCall = () => {
@@ -42,6 +45,23 @@ class Content extends Component {
         this.setState({
           loadingContent: false,
           contentLoadingError: true
+        });
+      });
+  }
+
+  getRatingsApiCall = () => {
+    axios.get(API.endpoint + 'ratings/' + this.props.match.params.id)
+      .then(response => {
+        const ratingData = response.data.data;
+
+        this.setState({
+          loadingRating: false,
+          ratingData
+        });
+      })
+      .catch(error => {
+        this.setState({
+          loadingRating: false
         });
       });
   }
@@ -79,7 +99,7 @@ class Content extends Component {
         if (ratingData) {
           // if result found, user has already made a rating
           this.setState({
-            ratingLoadingError: false,
+            individualRatingLoadingError: false,
             loadingIndividualRating: false,
             alreadyRated: true,
             userRating: ratingData.stars
@@ -87,7 +107,7 @@ class Content extends Component {
         } else {
           // user hasn't rated if no results found
           this.setState({
-            ratingLoadingError: false,
+            individualRatingLoadingError: false,
             loadingIndividualRating: false,
             alreadyRated: false
           });
@@ -95,7 +115,7 @@ class Content extends Component {
       })
       .catch(error => {
         this.setState({
-          ratingLoadingError: true,
+          individualRatingLoadingError: true,
           loadingIndividualRating: false
         });
       });
@@ -119,11 +139,12 @@ class Content extends Component {
     axios.post(API.endpoint + 'ratings?' + params, {}, authHeaders)
       .then(response => {
         const ratingData = response.data.data;
-        // update rating here
+        this.getRatingsApiCall();
+        this.setState({ alreadyRated: true });
         this.closeRatingModal();
       })
       .catch(error => {
-        this.setState({ ratingLoadingError: true, postingRating: false });
+        this.setState({ individualRatingLoadingError: true, postingRating: false });
       });
   }
 
@@ -139,13 +160,15 @@ class Content extends Component {
       loadingContent,
       contentData,
       contentLoadingError,
+      loadingRating,
+      ratingData,
       playPercent,
       loadingIndividualRating,
       alreadyRated,
       displayRatingModal,
       postingRating,
       userRating,
-      ratingLoadingError
+      individualRatingLoadingError
     } = this.state;
 
     const ratingModalProps = {
@@ -157,7 +180,7 @@ class Content extends Component {
       postingRating,
       postRatingApiCall: this.postRatingApiCall,
       closeRatingModal: this.closeRatingModal,
-      ratingLoadingError
+      individualRatingLoadingError
     };
 
     const videoProps = {
@@ -170,7 +193,9 @@ class Content extends Component {
     const infoProps = {
       loadingContent,
       contentData,
-      contentLoadingError
+      contentLoadingError,
+      loadingRating,
+      ratingData
     };
 
     return (

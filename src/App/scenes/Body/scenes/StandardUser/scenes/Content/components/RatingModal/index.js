@@ -14,7 +14,7 @@ const RatingModal = props => {
     postingRating,
     postRatingApiCall,
     closeRatingModal,
-    ratingLoadingError
+    individualRatingLoadingError
   } = props;
 
   const promptRatingProps = {
@@ -23,7 +23,7 @@ const RatingModal = props => {
     selectRating
   };
 
-  if (ratingLoadingError) {
+  if (individualRatingLoadingError) {
     return (
       <Modal
         title="Error"
@@ -65,7 +65,7 @@ RatingModal.propTypes = {
   postRatingApiCall: PropTypes.func.isRequired,
   postingRating: PropTypes.bool.isRequired,
   closeRatingModal: PropTypes.func.isRequired,
-  ratingLoadingError: PropTypes.bool.isRequired
+  individualRatingLoadingError: PropTypes.bool.isRequired
 }
 
 const PromptRating = props => {

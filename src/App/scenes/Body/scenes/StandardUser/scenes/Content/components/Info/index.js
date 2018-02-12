@@ -8,7 +8,9 @@ const Info = props => {
   const {
     loadingContent,
     contentData,
-    contentLoadingError
+    contentLoadingError,
+    loadingRating,
+    ratingData
   } = props;
 
   const cardStyle = {
@@ -25,11 +27,11 @@ const Info = props => {
   } else {
     return (
       <Card title={contentData.title} loading={loadingContent} bordered={false} style={cardStyle}>
-        {contentData.averageRating ? (
+        {ratingData.average ? (
           <Tooltip placement="topLeft" title="Watch movie to rate content">
             <div className='star-rating'>
               <StarRatings
-                rating={contentData.averageRating}
+                rating={ratingData.average}
                 starRatedColor="red"
                 numberOfStars={5}
                 starDimension="20"
@@ -39,7 +41,9 @@ const Info = props => {
           </Tooltip>
         ) : (
           <div>
-            Not Enough Ratings
+            <strong>
+              {loadingRating ? 'Loading Ratings' : 'Not Enough Ratings'}
+            </strong>
           </div>
         )}
         {contentData.genre}
@@ -56,7 +60,9 @@ const Info = props => {
 Info.propTypes = {
   loadingContent: PropTypes.bool.isRequired,
   contentData: PropTypes.object.isRequired,
-  contentLoadingError: PropTypes.bool.isRequired
+  contentLoadingError: PropTypes.bool.isRequired,
+  loadingRating: PropTypes.bool.isRequired,
+  ratingData: PropTypes.object.isRequired
 }
 
 export default Info;
