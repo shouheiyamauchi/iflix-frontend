@@ -15,7 +15,11 @@ class LoginModal extends Component {
       displayModal: false,
       loggingIn: false,
       username: '',
-      password: ''
+      password: '',
+      validationMessages: {
+        username: '',
+        password: ''
+      }
     };
   }
 
@@ -32,8 +36,24 @@ class LoginModal extends Component {
   }
 
   handleLogin = () => {
-    this.setState({ loggingIn: true });
-    this.loginApiCall();
+    if (this.formValidation()) {
+      this.setState({ loggingIn: true });
+      this.loginApiCall();
+    };
+  }
+
+  formValidation = () => {
+    const validationMessages = {
+      username: '',
+      password: ''
+    };
+
+    if (!this.state.username) validationMessages.username = 'Username cannot be blank';
+    if (!this.state.password) validationMessages.password = 'Password cannot be blank';
+
+    this.setState({ validationMessages });
+
+    return !validationMessages.username && !validationMessages.password
   }
 
   loginApiCall = () => {
@@ -51,8 +71,20 @@ class LoginModal extends Component {
         this.resetModal();
       })
       .catch(error => {
-        console.log(error);
+        if (error.response.status === 404) this.incorrectLoginDetails();
       });
+  }
+
+  incorrectLoginDetails = () => {
+    const validationMessages = {
+      username: 'The username and password did not match any records',
+      password: 'The username and password did not match any records'
+    };
+
+    this.setState({
+      loggingIn: false,
+      validationMessages
+    });
   }
 
   resetModal = () => {
@@ -69,7 +101,8 @@ class LoginModal extends Component {
       displayModal,
       loggingIn,
       username,
-      password
+      password,
+      validationMessages
     } = this.state;
 
     const formIconStyle = { color: 'rgba(0,0,0,.25)' }
@@ -82,25 +115,34 @@ class LoginModal extends Component {
         confirmLoading={loggingIn}
         onCancel={this.resetModal}
       >
-        <FormItem>
-          <Input
-            prefix={<Icon type="user" style={formIconStyle} />}
-            placeholder="Username"
-            value={username}
-            name="username"
-            onChange={this.handleInput}
-          />
-        </FormItem>
-        <FormItem>
-          <Input
-            prefix={<Icon type="lock" style={formIconStyle} />}
-            type="password"
-            placeholder="Password"
-            value={password}
-            name="password"
-            onChange={this.handleInput}
-          />
-        </FormItem>
+        <Form>
+          <FormItem
+            validateStatus={validationMessages.username && 'error'}
+            help={validationMessages.username}
+          >
+            <Input
+              prefix={<Icon type="user" style={formIconStyle} />}
+              placeholder="Username"
+              value={username}
+              name="username"
+              onChange={this.handleInput}
+            />
+          </FormItem>
+          <FormItem
+            validateStatus={validationMessages.password && 'error'}
+            help={validationMessages.password}
+          >
+            <Input
+              prefix={<Icon type="lock" style={formIconStyle} />}
+              type="password"
+              placeholder="Password"
+              value={password}
+              name="password"
+              onChange={this.handleInput}
+              label="Fail"
+            />
+          </FormItem>
+        </Form>
       </Modal>
     )
   }
