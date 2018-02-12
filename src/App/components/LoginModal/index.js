@@ -139,7 +139,6 @@ class LoginModal extends Component {
               value={password}
               name="password"
               onChange={this.handleInput}
-              label="Fail"
             />
           </FormItem>
         </Form>
