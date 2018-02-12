@@ -9,11 +9,15 @@ class LogoutModal extends Component {
     confirm({
       title: 'Are you sure to logout?',
       onOk: () => {
-        localStorage.removeItem('iflixAuth');
-        this.props.updateLoggedInStatus();
+        this.logoutUserUpdateStatus();
       },
       onCancel: () => {},
     });
+  }
+
+  logoutUserUpdateStatus = () => {
+    localStorage.removeItem('iflixAuth');
+    this.props.updateLoggedInStatus();
   }
 
   render() {

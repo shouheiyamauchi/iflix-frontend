@@ -21,17 +21,26 @@ class Nav extends Component {
     const menuItemKey = menuItemProps.key;
 
     switch(menuItemKey) {
-      case 'movies':
+      case 'Movies':
         this.goToPage('/contents');
         break;
-      case 'logout':
+      case 'Logout':
         this.props.openLogoutModal();
         break;
-      case 'login':
+      case 'Login':
         this.props.openLoginModal();
         break;
       default:
     }
+  }
+
+  generateMenuItem = itemText => {
+    // add name attribute for easier testing
+    return (
+      <Item key={itemText}>
+        <span name={itemText}>{itemText}</span>
+    </Item>
+    )
   }
 
   goToPage = redirectPage => {
@@ -64,11 +73,11 @@ class Nav extends Component {
               style={{ lineHeight: '64px' }}
               onClick={itemProps => {this.handleMenuClick(itemProps)}}
             >
-              <Item key="movies">Movies</Item>
+              {this.generateMenuItem('Movies')}
               {userData ? (
-                <Item key="logout">Logout</Item>
+                this.generateMenuItem('Logout')
               ) : (
-                <Item key="login"><span>Login</span></Item>
+                this.generateMenuItem('Login')
               )}
             </Menu>
           </div>

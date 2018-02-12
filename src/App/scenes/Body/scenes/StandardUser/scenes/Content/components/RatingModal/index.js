@@ -56,6 +56,18 @@ const RatingModal = props => {
   };
 }
 
+RatingModal.propTypes = {
+  loadingIndividualRating: PropTypes.bool.isRequired,
+  alreadyRated: PropTypes.bool.isRequired,
+  userRating: PropTypes.number.isRequired,
+  displayRatingModal: PropTypes.bool.isRequired,
+  selectRating: PropTypes.func.isRequired,
+  postRatingApiCall: PropTypes.func.isRequired,
+  postingRating: PropTypes.bool.isRequired,
+  closeRatingModal: PropTypes.func.isRequired,
+  ratingLoadingError: PropTypes.bool.isRequired
+}
+
 const PromptRating = props => {
   const {
     alreadyRated,
@@ -95,18 +107,6 @@ const PromptRating = props => {
       </div>
     );
   };
-}
-
-RatingModal.propTypes = {
-  loadingIndividualRating: PropTypes.bool.isRequired,
-  alreadyRated: PropTypes.bool.isRequired,
-  userRating: PropTypes.number.isRequired,
-  displayRatingModal: PropTypes.bool.isRequired,
-  selectRating: PropTypes.func.isRequired,
-  postRatingApiCall: PropTypes.func.isRequired,
-  postingRating: PropTypes.bool.isRequired,
-  closeRatingModal: PropTypes.func.isRequired,
-  ratingLoadingError: PropTypes.bool.isRequired
 }
 
 PromptRating.propTypes = {

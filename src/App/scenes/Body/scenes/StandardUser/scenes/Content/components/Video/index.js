@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Progress } from 'antd';
+import { Icon, Spin, Progress } from 'antd';
 import logo from './images/logo.png';
 import styles from './styles.module.scss';
 
@@ -16,7 +16,7 @@ const Video = props => {
     return (
       <div className={styles.container}>
         <div className={styles.videoPreviewLoading}>
-          <Icon type="play-circle-o" />
+          {contentLoadingError ? <Icon type="exclamation-circle-o" /> : <Spin /> }
         </div>
       </div>
     );

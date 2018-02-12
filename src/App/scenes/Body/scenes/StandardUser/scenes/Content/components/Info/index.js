@@ -27,7 +27,7 @@ const Info = props => {
       <Card title={contentData.title} loading={loadingContent} bordered={false} style={cardStyle}>
         {contentData.averageRating ? (
           <Tooltip placement="topLeft" title="Watch movie to rate content">
-            <div>
+            <div className='star-rating'>
               <StarRatings
                 rating={contentData.averageRating}
                 starRatedColor="red"

@@ -6,7 +6,7 @@ import Body from './scenes/Body'
 import LoginModal from './components/LoginModal'
 import LogoutModal from './components/LogoutModal'
 
-class Parent extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -45,4 +45,4 @@ class Parent extends Component {
   }
 }
 
-export default Parent;
+export default App;

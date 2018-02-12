@@ -33,7 +33,7 @@ const StandardUser = props => {
 }
 
 StandardUser.propTypes = {
-  refs: PropTypes.object,
+  refs: PropTypes.object.isRequired,
   userData: PropTypes.object,
   openLoginModal: PropTypes.func.isRequired
 }
