@@ -16,12 +16,10 @@
 
 Dummy usernames already created: admin, iflix_user, shouhei, john (all with the password 'password')
 
-### Steps for running backend (dependency for front end)
+### Steps for running API (dependency for front end)
   - git clone git@github.com:shouheiyamauchi/iflix-backend.git
-  - yarn install (or npm install)
-  - sudo mongod
-  - yarn run localDev (or npm run dev)
-  - yarn run localTest
+  - yarn install
+  - yarn run dev
 
 'yarn' command can be replaced with 'npm'
 
