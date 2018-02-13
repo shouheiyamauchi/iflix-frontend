@@ -1,10 +1,11 @@
 import API from 'config/api';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import querystring from 'querystring';
 import update from 'immutability-helper';
-import { List, } from 'antd';
+import { List, Button, Divider } from 'antd';
 import ContentSummary from './components/ContentSummary'
 import styles from './styles.module.scss';
 
@@ -116,6 +117,14 @@ class ContentList extends Component {
 
     return (
       <div className={styles.listContainer}>
+        {userData && userData.userRole === 'admin' && (
+          <div style={{ textAlign: 'right' }}>
+            <Link to={'/admin/contents/new'}>
+              <Button type="danger">Add Movie</Button>
+            </Link>
+            <Divider />
+          </div>
+        )}
         <List
           itemLayout="vertical"
           size="large"
