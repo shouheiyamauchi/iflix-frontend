@@ -64,7 +64,7 @@ class Nav extends Component {
         {redirectPage && <Redirect push to={redirectPage} />}
         <Header>
           <div className={styles.logoContainer}>
-            <img alt="iflix logo" src={logo} />
+            <img onClick={() => this.goToPage('/')} alt="iflix logo" src={logo} />
           </div>
           <div style={{float: 'left'}}>
             <Menu

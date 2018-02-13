@@ -67,6 +67,22 @@ class SignupModal extends Component {
       .then(response => {
         this.loginApiCall();
       })
+      .catch(error => {
+        console.log(error)
+        if (error.response.status === 409) this.duplicateUsername();
+      });
+  }
+
+  duplicateUsername = () => {
+    const validationMessages = {
+      username: 'The username is already taken',
+      password: 'The username is already taken'
+    };
+
+    this.setState({
+      signingUp: false,
+      validationMessages
+    });
   }
 
   loginApiCall = () => {
