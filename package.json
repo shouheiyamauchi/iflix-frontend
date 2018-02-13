@@ -21,6 +21,7 @@
     "test": "NODE_PATH=src REACT_APP_STAGE=test react-app-rewired test --env=jsdom"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.13.1",
     "babel-plugin-import": "^1.6.3",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
