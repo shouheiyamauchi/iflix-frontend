@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { Layout } from 'antd';
 
 import Public from './scenes/Public';
@@ -8,6 +8,9 @@ import ContentsList from './scenes/Public//scenes/ContentsList';
 
 import StandardUser from './scenes/StandardUser';
 import Content from './scenes/StandardUser/scenes/Content';
+
+import AdminUser from './scenes/AdminUser';
+import EditContent from './scenes/AdminUser/scenes/EditContent';
 
 class Body extends Component {
   render() {
@@ -22,16 +25,27 @@ class Body extends Component {
       minHeight: 'calc(100vh - 64px)'
     }
 
+    const publicProps = {
+      userData
+    }
+
     const standardUserProps = {
       refs,
       userData,
       openLoginModal
     }
 
+    const adminUserProps = {
+      userData
+    }
+
     return (
       <Layout.Content style={containerStyle}>
-        <Route exact path="/contents" render={(urlParams) => <Public><ContentsList {...urlParams} /></Public>} />
-        <Route path="/contents/:id" render={(urlParams) => <StandardUser {...standardUserProps}><Content {...urlParams} /></StandardUser>} />
+        <Switch>
+          <Route exact path="/" render={(urlParams) => <Public {...publicProps}><ContentsList {...urlParams} userData={userData} /></Public>} />
+          <Route path="/contents/:id" render={(urlParams) => <StandardUser {...standardUserProps}><Content {...urlParams} /></StandardUser>} />
+          <Route path="/admin/contents/:id" render={(urlParams) => <AdminUser {...adminUserProps}><EditContent {...urlParams} /></AdminUser>} />
+        </Switch>
       </Layout.Content>
     );
   }

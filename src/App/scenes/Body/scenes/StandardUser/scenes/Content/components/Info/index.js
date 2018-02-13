@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Card, Tooltip } from 'antd';
+import { Card, Popover, Icon } from 'antd';
 import StarRatings from 'react-star-ratings';
+import RatingDisplay from 'App/components/RatingDisplay';
 
 const Info = props => {
   const {
@@ -28,7 +29,6 @@ const Info = props => {
     return (
       <Card title={contentData.title} loading={loadingContent} bordered={false} style={cardStyle}>
         {ratingData.average ? (
-          <Tooltip placement="topLeft" title="Watch movie to rate content">
             <div className='star-rating'>
               <StarRatings
                 rating={ratingData.average}
@@ -37,8 +37,11 @@ const Info = props => {
                 starDimension="20"
                 starSpacing="0"
               />
+              &nbsp;
+              <Popover placement="bottom" content={<RatingDisplay {...ratingData} loadingRating={loadingRating} />} title="Ratings">
+                <Icon type="down-circle" style={{ cursor: 'pointer' }} />
+              </Popover>
             </div>
-          </Tooltip>
         ) : (
           <div>
             <strong>

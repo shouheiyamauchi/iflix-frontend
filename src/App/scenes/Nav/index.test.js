@@ -7,15 +7,18 @@ import Nav from './';
 describe('<Nav />', () => {
   describe('Login/Logout - no user data props', () => {
     let renderedComponent;
+    let mockOpenSignupModal;
     let mockOpenLoginModal;
     let mockOpenLogoutModal;
 
     beforeEach(() => {
+      mockOpenSignupModal = sinon.spy();
       mockOpenLoginModal = sinon.spy();
       mockOpenLogoutModal = sinon.spy();
 
       renderedComponent = mount(
         <Nav
+          openSignupModal={mockOpenSignupModal}
           openLoginModal={mockOpenLoginModal}
           openLogoutModal={mockOpenLogoutModal}
         />
@@ -39,10 +42,12 @@ describe('<Nav />', () => {
 
   describe('Login/Logout - with user data props', () => {
     let renderedComponent;
+    let mockOpenSignupModal;
     let mockOpenLoginModal;
     let mockOpenLogoutModal;
 
     beforeEach(() => {
+      mockOpenSignupModal = sinon.spy();
       mockOpenLoginModal = sinon.spy();
       mockOpenLogoutModal = sinon.spy();
 
@@ -56,6 +61,7 @@ describe('<Nav />', () => {
       renderedComponent = mount(
         <Nav
           userData={sampleAuthObject}
+          openSignupModal={mockOpenSignupModal}
           openLoginModal={mockOpenLoginModal}
           openLogoutModal={mockOpenLogoutModal}
         />

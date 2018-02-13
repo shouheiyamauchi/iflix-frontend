@@ -16,6 +16,10 @@ class App extends Component {
     };
   }
 
+  componentWillMount() {
+    this.updateLoggedInStatus();
+  }
+
   openSignupModal = () => {
     this.refs.signupModal.openSignupModal();
   }

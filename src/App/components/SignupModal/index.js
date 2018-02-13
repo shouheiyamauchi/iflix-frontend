@@ -35,7 +35,7 @@ class SignupModal extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleLogin = () => {
+  handleSignup = () => {
     if (this.formValidation()) {
       this.setState({ signingUp: true });
       this.signupApiCall();
@@ -48,8 +48,9 @@ class SignupModal extends Component {
       password: ''
     };
 
-    if (!this.state.username) validationMessages.username = 'Username cannot be blank';
-    if (!this.state.password) validationMessages.password = 'Password cannot be blank';
+    Object.keys(validationMessages).map(fieldName => {
+      if (!this.state[fieldName]) validationMessages[fieldName] = fieldName + ' cannot be blank';
+    });
 
     this.setState({ validationMessages });
 
@@ -108,7 +109,7 @@ class SignupModal extends Component {
       <Modal title="Signup"
         visible={displayModal}
         okText={'Signup'}
-        onOk={this.handleLogin}
+        onOk={this.handleSignup}
         confirmLoading={signingUp}
         onCancel={this.resetModal}
       >

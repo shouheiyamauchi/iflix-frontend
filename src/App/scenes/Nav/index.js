@@ -22,7 +22,7 @@ class Nav extends Component {
 
     switch(menuItemKey) {
       case 'Movies':
-        this.goToPage('/contents');
+        this.goToPage('/');
         break;
       case 'Logout':
         this.props.openLogoutModal();
@@ -70,7 +70,7 @@ class Nav extends Component {
             <Menu
               theme="dark"
               mode="horizontal"
-              defaultSelectedKeys={['movies']}
+              defaultSelectedKeys={['Movies']}
               style={{ lineHeight: '64px' }}
               onClick={itemProps => {this.handleMenuClick(itemProps)}}
             >

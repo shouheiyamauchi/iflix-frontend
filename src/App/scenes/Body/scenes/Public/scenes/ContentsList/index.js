@@ -1,5 +1,6 @@
 import API from 'config/api';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import querystring from 'querystring';
 import update from 'immutability-helper';
@@ -18,27 +19,27 @@ class ContentList extends Component {
         current: 0,
         pageSize: 10,
         total: 0,
-        onChange: ((targetPage, pageSize) => {this.openPage(targetPage, this.state.paginationConfig.pageSize, true)}),
+        onChange: ((targetPage, pageSize) => {this.openPage(targetPage, this.state.paginationConfig.pageSize)}),
         showSizeChanger: true,
-        onShowSizeChange: ((targetPage, pageSize) => {this.openPage(targetPage, pageSize, true)})
+        onShowSizeChange: ((targetPage, pageSize) => {this.openPage(targetPage, pageSize)})
       }
     };
   }
 
   componentDidMount() {
-    this.openPage(1, this.state.paginationConfig.pageSize, true);
+    this.openPage(1, this.state.paginationConfig.pageSize);
   }
 
-  openPage = (targetPage, newPageSize, includeRating) => {
-    if (this.apiCallRequired(targetPage, newPageSize)) {
-      this.contentListApiCall(targetPage, newPageSize, includeRating);
+  openPage = (targetPage, newPageSize, apiCallRequired) => {
+    if (this.apiCallRequired(targetPage, newPageSize, apiCallRequired)) {
+      this.contentListApiCall(targetPage, newPageSize);
     } else {
       this.switchPage(targetPage);
     };
   }
 
-  apiCallRequired = (targetPage, newPageSize) => {
-    return (!this.state.contents[targetPage] || newPageSize !== this.state.paginationConfig.pageSize);
+  apiCallRequired = (targetPage, newPageSize, overrideRequired) => {
+    return (overrideRequired || !this.state.contents[targetPage] || newPageSize !== this.state.paginationConfig.pageSize);
   }
 
   switchPage = targetPage => {
@@ -49,13 +50,13 @@ class ContentList extends Component {
     }));
   }
 
-  contentListApiCall = (targetPage, newPageSize, includeRating) => {
+  contentListApiCall = (targetPage, newPageSize) => {
     this.setState({ contentLoading: true });
 
     const params = querystring.stringify({
       pageNo: targetPage,
       resultsPerPage: newPageSize,
-      includeRating
+      includeRating: true
     });
 
     axios.get(API.endpoint + 'contents?' + params)
@@ -104,6 +105,15 @@ class ContentList extends Component {
       contentLoading
     } = this.state;
 
+    const {
+      userData
+    } = this.props;
+
+    const contentSummaryProps = {
+      userData,
+      openPage: () => this.openPage(this.state.paginationConfig.current, this.state.paginationConfig.pageSize, true)
+    };
+
     return (
       <div className={styles.listContainer}>
         <List
@@ -113,12 +123,16 @@ class ContentList extends Component {
           dataSource={contents[paginationConfig.current]}
           loading={contentLoading}
           renderItem={content => (
-            <ContentSummary content={content} />
+            <ContentSummary content={content} {...contentSummaryProps} />
           )}
         />
       </div>
     );
   }
+}
+
+ContentList.propTypes = {
+  userData: PropTypes.object
 }
 
 export default ContentList;

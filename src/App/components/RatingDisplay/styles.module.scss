@@ -1,0 +1,26 @@
+.ratingDisplayContainer {
+  overflow: hidden;
+  width: 170px;
+
+  .leftContainer {
+    float: left;
+  }
+
+  .rightContainer {
+    float: right;
+
+    .percentageDisplayContainer {
+      overflow: hidden;
+      width: 130px;
+
+      .percentageBars {
+        float: left;
+        width: 100px;
+      }
+
+      .percentageText {
+        float: right;
+      }
+    }
+  }
+}

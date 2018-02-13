@@ -4,17 +4,45 @@ import { shallow } from 'enzyme';
 import Info from './';
 
 describe('<Info />', () => {
-  describe('Rendering component - error loading content', () => {
-    it('renders an error message', () => {
+  describe('Rendering component - content loaded, loading rating', () => {
+    it('renders a loading ratings message', () => {
       const loadingContent = false;
-      const contentLoadingError = true;
+      const contentLoadingError = false;
       const contentData = {};
+      const loadingRating = true;
+      const ratingData = {};
 
       const renderedComponent = shallow(
         <Info
           loadingContent={loadingContent}
           contentLoadingError={contentLoadingError}
           contentData={contentData}
+          loadingRating={loadingRating}
+          ratingData={ratingData}
+        />
+      );
+
+      expect(renderedComponent.contains(
+        'Loading Ratings'
+      )).to.equal(true);
+    });
+  });
+
+  describe('Rendering component - error loading content', () => {
+    it('renders a loading content error message', () => {
+      const loadingContent = false;
+      const contentLoadingError = true;
+      const contentData = {};
+      const loadingRating = false;
+      const ratingData = {};
+
+      const renderedComponent = shallow(
+        <Info
+          loadingContent={loadingContent}
+          contentLoadingError={contentLoadingError}
+          contentData={contentData}
+          loadingRating={loadingRating}
+          ratingData={ratingData}
         />
       );
 
@@ -29,12 +57,16 @@ describe('<Info />', () => {
       const loadingContent = false;
       const contentLoadingError = false;
       const contentData = {};
+      const loadingRating = false;
+      const ratingData = {};
 
       const renderedComponent = shallow(
         <Info
           loadingContent={loadingContent}
           contentLoadingError={contentLoadingError}
           contentData={contentData}
+          loadingRating={loadingRating}
+          ratingData={ratingData}
         />
       );
 
@@ -46,8 +78,10 @@ describe('<Info />', () => {
     it('renders a star rating when no average rating exists', () => {
       const loadingContent = false;
       const contentLoadingError = false;
-      const contentData = {
-        averageRating: 1
+      const contentData = {};
+      const loadingRating = false;
+      const ratingData = {
+        average: 3
       };
 
       const renderedComponent = shallow(
@@ -55,6 +89,8 @@ describe('<Info />', () => {
           loadingContent={loadingContent}
           contentLoadingError={contentLoadingError}
           contentData={contentData}
+          loadingRating={loadingRating}
+          ratingData={ratingData}
         />
       );
 

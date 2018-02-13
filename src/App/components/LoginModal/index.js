@@ -48,8 +48,9 @@ class LoginModal extends Component {
       password: ''
     };
 
-    if (!this.state.username) validationMessages.username = 'Username cannot be blank';
-    if (!this.state.password) validationMessages.password = 'Password cannot be blank';
+    Object.keys(validationMessages).map(fieldName => {
+      if (!this.state[fieldName]) validationMessages[fieldName] = fieldName + ' cannot be blank';
+    });
 
     this.setState({ validationMessages });
 
@@ -71,6 +72,7 @@ class LoginModal extends Component {
         this.resetModal();
       })
       .catch(error => {
+        console.log(error)
         if (error.response.status === 404) this.incorrectLoginDetails();
       });
   }

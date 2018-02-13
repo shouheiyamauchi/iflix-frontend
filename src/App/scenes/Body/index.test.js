@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import Body from './';
 
-describe('<App />', () => {
+describe('<Body />', () => {
   describe('Rendering component', () => {
     it('renders a Body container', () => {
       const mockOpenLoginModal = sinon.spy();
