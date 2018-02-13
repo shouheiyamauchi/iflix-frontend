@@ -25,6 +25,8 @@ class RatingDisplay extends Component {
       showInfo: false
     };
 
+    const starCounts = [oneStarCount, twoStarsCount, threeStarsCount, fourStarsCount, fiveStarsCount];
+
     if (totalStarsCount) {
       return (
         <div className={styles.ratingDisplayContainer}>
@@ -38,18 +40,10 @@ class RatingDisplay extends Component {
           <div className={styles.rightContainer}>
             <div className={styles.percentageDisplayContainer}>
               <div className={styles.percentageBars}>
-                <Progress percent={this.getRatingPercentage(oneStarCount)} {...progressBarProps} />
-                <Progress percent={this.getRatingPercentage(twoStarsCount)} {...progressBarProps} />
-                <Progress percent={this.getRatingPercentage(threeStarsCount)} {...progressBarProps} />
-                <Progress percent={this.getRatingPercentage(fourStarsCount)} {...progressBarProps} />
-                <Progress percent={this.getRatingPercentage(fiveStarsCount)} {...progressBarProps} />
+                {starCounts.map(starCount => <Progress percent={this.getRatingPercentage(starCount)} {...progressBarProps} />)}
               </div>
               <div className={styles.percentageText}>
-                <small>{this.getRatingPercentage(oneStarCount)}%</small><br />
-                <small>{this.getRatingPercentage(twoStarsCount)}%</small><br />
-                <small>{this.getRatingPercentage(threeStarsCount)}%</small><br />
-                <small>{this.getRatingPercentage(fourStarsCount)}%</small><br />
-                <small>{this.getRatingPercentage(fiveStarsCount)}%</small>
+                {starCounts.map(starCount => <div><small>{this.getRatingPercentage(starCount)}%</small><br /></div>)}
               </div>
             </div>
           </div>
