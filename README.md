@@ -14,9 +14,7 @@
   - open http://localhost:3000
   - login as admin (admin::password) to add, edit and delete content
 
-### Steps for running tests
-  - brew install watchman
-  - yarn run test -> type 'a' to run all tests
+Dummy usernames already created: admin, iflix_user, shouhei, john (all with the password 'password')
 
 ### Steps for running backend (dependency for front end)
   - git clone git@github.com:shouheiyamauchi/iflix-backend.git
@@ -25,9 +23,11 @@
   - yarn run localDev (or npm run dev)
   - yarn run localTest
 
-Dummy usernames already created: admin, iflix_user, shouhei, john (all with the password 'password')
-
 'yarn' command can be replaced with 'npm'
+
+### Steps for running tests
+  - brew install watchman
+  - yarn run test -> type 'a' to run all tests
 
 ### Efficiency Considerations
   - Only call API when necessary (e.g. when displaying a rating call API only when the user clicks on the rating modal)
