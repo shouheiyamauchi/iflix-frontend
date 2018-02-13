@@ -1,8 +1,11 @@
 import API from 'config/api';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 import querystring from 'querystring';
+import { Spin } from 'antd';
 import ContentForm from './components/ContentForm';
 
 class EditContent extends Component {
@@ -25,12 +28,18 @@ class EditContent extends Component {
         releaseDate: '',
         thumbnail: ''
       },
-      contentLoadingError: false
+      contentLoadingError: false,
+      submittingContentForm: false,
+      redirectPage: '',
     }
   }
 
   componentDidMount() {
-    if (this.props.match.params.id !== 'new') this.getContentApiCall();
+    if (!this.newContent()) this.getContentApiCall();
+  }
+
+  newContent = () => {
+    return this.props.match.params.id === 'new'
   }
 
   getContentApiCall = () => {
@@ -69,25 +78,103 @@ class EditContent extends Component {
     }));
   }
 
+  handleSubmit = e => {
+    e.preventDefault();
+
+    if (this.formValidation()) {
+      this.setState({ submittingContentForm: true });
+
+      const params = querystring.stringify(
+        update(this.state.contentData, {
+          releaseDate: {$set: this.state.contentData.releaseDate.toString()}
+        })
+      );
+
+      const authHeaders = { headers: { 'Authorization': 'JWT ' + this.props.userData.token } }
+
+      this.newContent() ? this.createContentApiCall(params, authHeaders) : this.editContentApiCall(params, authHeaders);
+    };
+  };
+
+  formValidation = () => {
+    const validationMessages = {
+      title: '',
+      description: '',
+      genre: '',
+      releaseDate: '',
+      thumbnail: ''
+    };
+
+    Object.keys(validationMessages).map(fieldName => {
+      if (!this.state.contentData[fieldName]) validationMessages[fieldName] = fieldName + ' cannot be blank';
+    });
+
+    this.setState({ validationMessages });
+
+    return !validationMessages.title && !validationMessages.description && !validationMessages.genre &&
+      !validationMessages.releaseDate && !validationMessages.thumbnail
+  }
+
+  createContentApiCall = (params, authHeaders) => {
+    axios.post(API.endpoint + 'contents?' + params, {} , authHeaders)
+      .then(response => {
+        this.setState({
+          redirectPage: '/contents/' + response.data.data._id,
+          submittingContentForm: false
+        });
+      })
+      .catch(error => {
+        this.setState({ submittingContentForm: false });
+        console.log(error);
+      })
+  }
+
+  editContentApiCall = (params, authHeaders) => {
+    axios.put(API.endpoint + 'contents/' + this.props.match.params.id + '?' + params, {} , authHeaders)
+      .then(response => {
+        this.setState({
+          redirectPage: '/contents/' + response.data.data._id,
+          submittingContentForm: false
+        });
+      })
+      .catch(error => {
+        this.setState({ submittingContentForm: false });
+        console.log(error);
+      })
+  }
+
   render() {
     const {
       loadingContent,
       contentData,
-      validationMessages
+      validationMessages,
+      contentLoadingError,
+      redirectPage,
+      submittingContentForm
     } = this.state;
 
     const contentFormProps = {
       loadingContent,
       contentData,
       validationMessages,
+      contentLoadingError,
       handleInput: this.handleInput,
-      handleDateInput: this.handleDateInput
+      handleDateInput: this.handleDateInput,
+      handleSubmit: this.handleSubmit,
+      submittingContentForm
     };
 
     return (
-      <ContentForm {...contentFormProps} />
+      <div>
+        {redirectPage && <Redirect push to={redirectPage} />}
+        <ContentForm {...contentFormProps} />
+      </div>
     );
   }
+}
+
+EditContent.propTypes = {
+  userDate: PropTypes.object
 }
 
 export default EditContent;

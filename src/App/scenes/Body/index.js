@@ -44,7 +44,7 @@ class Body extends Component {
         <Switch>
           <Route exact path="/" render={(urlParams) => <Public {...publicProps}><ContentsList {...urlParams} userData={userData} /></Public>} />
           <Route path="/contents/:id" render={(urlParams) => <StandardUser {...standardUserProps}><Content {...urlParams} /></StandardUser>} />
-          <Route path="/admin/contents/:id" render={(urlParams) => <AdminUser {...adminUserProps}><EditContent {...urlParams} /></AdminUser>} />
+          <Route path="/admin/contents/:id" render={(urlParams) => <AdminUser {...adminUserProps}><EditContent {...urlParams} userData={userData} /></AdminUser>} />
         </Switch>
       </Layout.Content>
     );

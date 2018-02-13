@@ -61,7 +61,7 @@ class Nav extends Component {
 
     return (
       <div>
-        {redirectPage ? (<Redirect push to={redirectPage} />) : (null)}
+        {redirectPage && <Redirect push to={redirectPage} />}
         <Header>
           <div className={styles.logoContainer}>
             <img alt="iflix logo" src={logo} />
